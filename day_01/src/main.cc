@@ -29,7 +29,7 @@ void ReadAndPrintLines(std::ifstream &file) {
 int main() {
   std::cout << "Hello AoC Day 1! \n" << std::endl;
 
-  const char *file_name = "../data/day_1_example.txt";
+  const char *file_name = "../data/day_01_example.txt";
   std::ifstream file = OpenFile(file_name);
   ReadAndPrintLines(file);
   CloseFile(file);

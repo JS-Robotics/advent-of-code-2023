@@ -1,0 +1,16 @@
+# Compiled Python bytecode
+*.py[cod]
+
+# Log files
+*.log
+
+
+# JetBrains IDE
+.idea/
+
+# Unit test reports
+TEST*.xml
+
+# Applications
+*.app
+*.exe
