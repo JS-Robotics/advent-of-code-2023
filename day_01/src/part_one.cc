@@ -48,12 +48,12 @@ VectorTwo<int> GetNumbersFromString(const std::string &string) {
   if (numbers.size() == 1) {
     return VectorTwo<int>{numbers.at(0), numbers.at(0)};
   } else {
-    return VectorTwo<int>{numbers.at(0), numbers.at(numbers.size()-1)};
+    return VectorTwo<int>{numbers.at(0), numbers.at(numbers.size() - 1)};
   }
 }
 
 int GetValue(VectorTwo<int> &the_vector) {
-  int prem_val = the_vector.first * 10 + the_vector.second;  // TODO make better code for this
+  int prem_val = the_vector.first * 10 + the_vector.second;
   return prem_val;
 }
 
@@ -79,7 +79,7 @@ int main() {
   const char *file_name = "../data/day_01_input.txt";
   std::ifstream file = OpenFile(file_name);
   int calibration_sum = ReadAndPrintLines(file);
-  std::cout << "The calibration sum is: " << calibration_sum << std::endl;
+  std::cout << "The calibration sum is: \033[32m" << calibration_sum << "\033[0m" << std::endl;
   CloseFile(file);
   return 0;
 
