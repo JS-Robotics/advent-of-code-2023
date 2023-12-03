@@ -112,7 +112,7 @@ int main() {
   const char *file_name = "../data/day_02_input.txt";
   std::ifstream file = OpenFile(file_name);
   int calibration_sum = ReadAndProcessGames(file);
-  std::cout << "The calibration sum is: \033[32m" << calibration_sum << "\033[0m" << std::endl;
+  std::cout << "The sum of valid game IDs are: \033[32m" << calibration_sum << "\033[0m" << std::endl;
   CloseFile(file);
   return 0;
 
