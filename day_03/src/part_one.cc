@@ -36,6 +36,13 @@ int ReadAndProcessGames(std::ifstream &file) {
 int main() {
   std::cout << "Hello AoC Day 3! \n" << std::endl;
 
+
+  /*!
+   * Solving plan
+   * Keep track of symbol index, check if diagonal or next to strings
+   * in line, over and above.
+   */
+
   const char *file_name = "../data/day_03_example.txt";
   std::ifstream file = OpenFile(file_name);
   int calibration_sum = ReadAndProcessGames(file);
