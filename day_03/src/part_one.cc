@@ -101,10 +101,11 @@ int ReadAndProcessGames(std::ifstream &file) {
     int idx = 0;
     for (char c : string_set.at(1)) {
       if (c != '.' && !CharIsNumber(c)) {
-//        std::cout << "Char is: " << c << std::endl;
+
         std::string number;
         if (CharIsNumber(string_set.at(0).at(idx))) {
           std::vector<char> chars = SearchLeft(string_set.at(0), idx);
+
           // Reverse loop using a range-based for loop and reverse iterators
           for (auto it = chars.rbegin(); it != chars.rend(); ++it) {
             char k = *it;
