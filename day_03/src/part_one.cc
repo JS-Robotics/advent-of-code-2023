@@ -35,22 +35,12 @@ int ReadAndProcessGames(std::ifstream &file) {
     input.emplace_back(line);
   }
 
-  for (int i = 0; i < (input.size() - 1); i++) {
-    if (i == 0) {
-      string_set[0] = input.at(i);
-      string_set[1] = input.at(i + 1);
-      string_set[2] = empty_line;
-    } else if (i == input.size() - 1) {
-      string_set[0] = input.at(i - 1);
-      string_set[1] = input.at(i);
-      string_set[2] = empty_line;
-    } else {
-      string_set[0] = input.at(i - 1);
-      string_set[1] = input.at(i);
-      string_set[2] = input.at(i + 1);
-    }
+  for (int i = 1; i < (input.size() - 1); i++) {
+    string_set[0] = input.at(i - 1);
+    string_set[1] = input.at(i);
+    string_set[2] = input.at(i + 1);
 
-    std::cout  << std::endl;
+    std::cout << std::endl;
     std::cout << string_set[0] << std::endl;
     std::cout << string_set[1] << std::endl;
     std::cout << string_set[2] << std::endl;
