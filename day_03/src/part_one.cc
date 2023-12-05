@@ -23,6 +23,9 @@ void CloseFile(std::ifstream &file) {
 }
 
 bool CharIsNumber(char c) {
+  if (c == '0') {
+    return true;
+  }
   if (c == '1') {
     return true;
   }
@@ -67,7 +70,7 @@ std::vector<char> SearchLeft(const std::string &line, int idx) {
 
 std::vector<char> SearchRight(const std::string &line, int idx) {
   std::vector<char> chars;
-  for (int i = idx + 1; i < line.size() - 1; i++) {
+  for (int i = idx + 1; i < line.size(); i++) {
     if (CharIsNumber(line.at(i))) {
       chars.emplace_back(line.at(i));
     } else {
@@ -77,8 +80,119 @@ std::vector<char> SearchRight(const std::string &line, int idx) {
   return chars;
 }
 
+int SearchLeftVal(const std::string &line, int idx) {
+  std::vector<char> chars;
+  for (int i = idx - 1; i >= 0; i--) {
+    if (CharIsNumber(line.at(i))) {
+      chars.emplace_back(line.at(i));
+    } else {
+      break;
+    }
+  }
 
+  std::string number;
+  for (auto it = chars.rbegin(); it != chars.rend(); ++it) {
+    char k = *it;
+    number += k;
+  }
 
+  if (number.empty()) {
+    return 0;
+  }
+
+  return std::stoi(number);
+}
+
+int SearchRightVal(const std::string &line, int idx) {
+  std::vector<char> chars;
+  for (int i = idx + 1; i < line.size(); i++) {
+    if (CharIsNumber(line.at(i))) {
+      chars.emplace_back(line.at(i));
+    } else {
+      break;
+    }
+  }
+
+  std::string number{};
+  chars = SearchRight(line, idx);
+  for (char k : chars) {
+    number += k;
+  }
+
+  if (number.empty()) {
+    return 0;
+  }
+
+  return std::stoi(number);
+}
+
+int SearchDiagLeft(const std::string &line, int idx) {
+  std::vector<char> chars;
+  for (int i = idx; i >= 0; i--) {
+    if (CharIsNumber(line.at(i))) {
+      chars.emplace_back(line.at(i));
+    } else {
+      break;
+    }
+  }
+
+  std::string number;
+  for (auto it = chars.rbegin(); it != chars.rend(); ++it) {
+    char k = *it;
+    number += k;
+  }
+
+  if (number.empty()) {
+    return 0;
+  }
+
+  return std::stoi(number);
+}
+
+int SearchDiagRight(const std::string &line, int idx) {
+  std::vector<char> chars;
+  for (int i = idx; i < line.size(); i++) {
+    if (CharIsNumber(line.at(i))) {
+      chars.emplace_back(line.at(i));
+    } else {
+      break;
+    }
+  }
+
+  std::string number{};
+  chars = SearchRight(line, idx);
+  for (char k : chars) {
+    number += k;
+  }
+
+  if (number.empty()) {
+    return 0;
+  }
+
+  return std::stoi(number);
+}
+
+int SearchTop(const std::string &line, int idx, char c) {
+  int num = 0;
+  std::string number;
+  if (CharIsNumber(line.at(idx))) {
+    std::vector<char> chars = SearchLeft(line, idx);
+
+    // Reverse loop using a range-based for loop and reverse iterators
+    for (auto it = chars.rbegin(); it != chars.rend(); ++it) {
+      char k = *it;
+      number += k;
+    }
+    number += line.at(idx);
+    chars = SearchRight(line, idx);
+    for (char k : chars) {
+      number += k;
+    }
+//    std::cout << "At sign: " << c << " - " << number << std::endl;
+    num = std::stoi(number);
+  }
+  return num;
+}
 
 int ReadAndProcessGames(std::ifstream &file) {
   std::string line;
@@ -89,7 +203,7 @@ int ReadAndProcessGames(std::ifstream &file) {
   string_set.reserve(3);
   int index = 0;
   while (std::getline(file, line)) {
-  std::cout << line << std::endl;
+    std::cout << line << std::endl;
     input.emplace_back(line);
   }
 
@@ -101,32 +215,59 @@ int ReadAndProcessGames(std::ifstream &file) {
     int idx = 0;
     for (char c : string_set.at(1)) {
       if (c != '.' && !CharIsNumber(c)) {
-
-        std::string number;
-        if (CharIsNumber(string_set.at(0).at(idx))) {
-          std::vector<char> chars = SearchLeft(string_set.at(0), idx);
-
-          // Reverse loop using a range-based for loop and reverse iterators
-          for (auto it = chars.rbegin(); it != chars.rend(); ++it) {
-            char k = *it;
-            number += k;
+        int sum_part = 0;
+        sum_part = SearchTop(string_set.at(0), idx, c);
+        sum += sum_part;
+        if (sum_part != 0) {
+          std::cout << "At sign: " << c << " - " << sum_part << std::endl;
+        } else if (sum_part == 0) {
+          sum_part = SearchDiagLeft(string_set.at(0), idx - 1);
+          sum += sum_part;
+          if (sum_part != 0) {
+            std::cout << "At sign: " << c << " - " << sum_part << std::endl;
           }
-          number += string_set.at(0).at(idx);
-          chars = SearchRight(string_set.at(0), idx);
-          for (char k : chars){
-            number += k;
+
+          sum_part = SearchDiagRight(string_set.at(0), idx);
+          sum += sum_part;
+          if (sum_part != 0) {
+            std::cout << "At sign: " << c << " - " << sum_part << std::endl;
           }
-        std::cout << "At sign: " << c << " - " << number << std::endl;
         }
+
+        sum_part = SearchTop(string_set.at(2), idx, c);
+        sum += sum_part;
+        if (sum_part != 0) {
+          std::cout << "At sign: " << c << " - " << sum_part << std::endl;
+        } else if (sum_part == 0) {
+          sum_part = SearchDiagLeft(string_set.at(2), idx - 1);
+          sum += sum_part;
+          if (sum_part != 0) {
+            std::cout << "At sign: " << c << " - " << sum_part << std::endl;
+          }
+
+          sum_part = SearchDiagRight(string_set.at(2), idx);
+          sum += sum_part;
+          if (sum_part != 0) {
+            std::cout << "At sign: " << c << " - " << sum_part << std::endl;
+          }
+        }
+
+        sum_part = SearchRightVal(string_set.at(1), idx);
+        sum += sum_part;
+        if (sum_part != 0) {
+          std::cout << "At sign: " << c << " - " << sum_part << std::endl;
+        }
+
+        sum_part = SearchLeftVal(string_set.at(1), idx);
+        sum += sum_part;
+        if (sum_part != 0) {
+          std::cout << "At sign: " << c << " - " << sum_part << std::endl;
+        }
+
       }
       idx++;
     }
 
-//    std::cout << std::endl;
-//    std::cout << string_set[0] << std::endl;
-//    std::cout << string_set[1] << std::endl;
-//    std::cout << string_set[2] << std::endl;
-//    std::cout << std::endl;
   }
 
   return sum;
@@ -142,7 +283,7 @@ int main() {
    * in line, over and above.
    */
 
-  const char *file_name = "../data/day_03_example.txt";
+  const char *file_name = "../data/day_03_input.txt";
   std::ifstream file = OpenFile(file_name);
   int calibration_sum = ReadAndProcessGames(file);
   std::cout << "The engine schematic sum is: \033[32m" << calibration_sum << "\033[0m" << std::endl;
