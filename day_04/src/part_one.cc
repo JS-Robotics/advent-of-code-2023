@@ -29,14 +29,10 @@ std::vector<int> GetCards(const std::string &line) {
   std::sregex_iterator iter(line.begin(), line.end(), pattern);
   std::sregex_iterator end;
 
-  if (iter->size() == 1) {
-    std::cout << "I am 1" << std::endl;
-  }
   std::string numbers_on_card;
   while (iter != end) {
     std::smatch match = *iter;
     numbers_on_card = match.str(1);
-//    std::cout << match.str(1) << std::endl;
     ++iter;
   }
 
@@ -46,7 +42,6 @@ std::vector<int> GetCards(const std::string &line) {
 
   while (iter_two != end_two) {
     std::smatch match = *iter_two;
-//    std::cout << match.str() << std::endl;
     numbers.emplace_back(std::stoi(match.str()));
     ++iter_two;
   }
@@ -65,7 +60,6 @@ std::vector<int> GetWinningNumbers(const std::string &line) {
   while (iter != end) {
     std::smatch match = *iter;
     winning_numbers = match.str(1);
-//    std::cout << match.str(1) << std::endl;
     ++iter;
   }
 
@@ -75,7 +69,6 @@ std::vector<int> GetWinningNumbers(const std::string &line) {
 
   while (iter_two != end_two) {
     std::smatch match = *iter_two;
-//    std::cout << match.str() << std::endl;
     numbers.emplace_back(std::stoi(match.str()));
     ++iter_two;
   }
@@ -91,12 +84,11 @@ int ReadAndProcess(std::ifstream &file) {
   std::vector<int> winning_numbers;
 
   while (std::getline(file, line)) {
-//    std::cout << line << std::endl;
     card_numbers = GetCards(line);
     winning_numbers = GetWinningNumbers(line);
     int matches = 0;
-    for (int number : card_numbers) {
 
+    for (int number : card_numbers) {
       for (int winning_number : winning_numbers) {
         if (number == winning_number) {
           matches++;
@@ -112,11 +104,8 @@ int ReadAndProcess(std::ifstream &file) {
         } else {
           sum_part = sum_part * 2;
         }
-//        std::cout << "Matches: " << matches << " points: " << sum_part << std::endl;
       }
-
       sum += sum_part;
-//      std::cout << "sum is: " << sum << std::endl;
     }
 
   }
@@ -126,13 +115,6 @@ int ReadAndProcess(std::ifstream &file) {
 
 int main() {
   std::cout << "Hello AoC Day 4! \n" << std::endl;
-
-
-  /*!
-   * Solving plan
-   * Keep track of symbol index, check if diagonal or next to strings
-   * in line, over and above.
-   */
 
   const char *file_name = "../data/day_04_input.txt";
   std::ifstream file = OpenFile(file_name);
