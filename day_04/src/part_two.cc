@@ -139,6 +139,8 @@ int ReadAndProcess(std::ifstream &file) {
   std::vector<CardSet> total_cards = card_sets;
   std::vector<CardSet> added_cards = card_sets;
 
+
+
   bool new_card = true;
   while (new_card) {
     std::vector<CardSet> prelim_cards = std::move(added_cards);
@@ -147,10 +149,10 @@ int ReadAndProcess(std::ifstream &file) {
     for (CardSet &kCardSet : prelim_cards) {
       if (kCardSet.matches > 0) {
         new_card = true;
-        std::cout << "at: " << kCardSet.card << std::endl;
+//        std::cout << "at: " << kCardSet.card << std::endl;
         for (int i = kCardSet.card + 1; i < kCardSet.card +1+ kCardSet.matches; i++) {
-          std::cout << "adding: " << i << std::endl;
-          added_cards.emplace_back(card_sets.at(i));
+//          std::cout << "adding: " << i << " Which gets:" << card_sets.at(i-1).card <<std::endl;
+          added_cards.emplace_back(card_sets.at(i-1));
         }
       }
     }
@@ -163,18 +165,20 @@ int ReadAndProcess(std::ifstream &file) {
     std::cout << card_set_1.card << std::endl;
   }
 
+//  std::cout << "Total " << total_cards.size() << std::endl;
+
   // Print the modified card_sets
   for (const auto &card_set : total_cards) {
-    std::cout << "Card: " << card_set.card << ", Matches: " << card_set.matches << std::endl;
+//    std::cout << "Card: " << card_set.card << ", Matches: " << card_set.matches << std::endl;
   }
-
+  sum = static_cast<int>(total_cards.size());
   return sum;
 }
 
 int main() {
   std::cout << "Hello AoC Day 4! \n" << std::endl;
 
-  const char *file_name = "../data/day_04_example.txt";
+  const char *file_name = "../data/day_04_input.txt";
   std::ifstream file = OpenFile(file_name);
   int calibration_sum = ReadAndProcess(file);
   std::cout << "The cards total sum is: \033[32m" << calibration_sum << "\033[0m" << std::endl;
